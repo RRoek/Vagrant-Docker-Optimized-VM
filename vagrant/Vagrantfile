@@ -1,0 +1,65 @@
+# -*- mode: ruby -*-
+   # vi: set ft=ruby :
+
+   Vagrant.configure("2") do |config|
+
+     # VAGRANT
+     config.vm.box = "scotch/box"
+     config.vm.box_version = "2.5.0"
+     config.vm.network "private_network", ip: "192.168.33.25"
+     config.vm.hostname = "Vagrant-Docker-optimized-VM"
+
+     # Enable use of Symlink :
+     config.vm.provider "virtualbox" do |v|
+       v.name = "Vagrant-Docker-optimized-VM"
+	   v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+     end
+
+	 #if Vagrant.has_plugin?("vagrant-proxyconf")
+	 #  config.proxy.http     = "http://poorBoyProxy..."
+	 #  config.proxy.https    = "http://poorBoyProxy..."
+	 #  config.proxy.no_proxy = "localhost,127.0.0.1,.example.com"
+	 #end
+
+
+     #==== === === ==== ==== === === ==== ==== === === ====     ==== === === ==== ==== === === ==== ==== === === ====
+     #==== === === ==== ==== === === ==== ==== === === ====     ==== === === ==== ==== === === ==== ==== === === ====
+     #                                                     SYNCH
+     #==== === === ==== ==== === === ==== ==== === === ====     ==== === === ==== ==== === === ==== ==== === === ====
+     #==== === === ==== ==== === === ==== ==== === === ====     ==== === === ==== ==== === === ==== ==== === === ====
+
+         config.vm.synced_folder "../shared-folder", "/var/www/html/shared-folder", type: "nfs"
+
+		 
+         #YourCompany :
+         #==== === === ====
+            config.vm.synced_folder "../YourCompany", "/var/www/html/YourCompany", type: "nfs"
+
+         #Default Synced folders :
+         #==== === === ====     ==== === === ====
+         config.vm.synced_folder "config/apache2/sites-available", "/etc/apache2/sites-available", mount_options:["dmode=777", "fmode=755"]
+         config.vm.synced_folder "init/", "/home/vagrant/init", mount_options:["dmode=777", "fmode=755"]
+
+     #==== === === ==== ==== === === ==== ==== === === ====     ==== === === ==== ==== === === ==== ==== === === ====
+     #==== === === ==== ==== === === ==== ==== === === ====     ==== === === ==== ==== === === ==== ==== === === ====
+
+
+     # APACHE2 :
+     config.vm.provision "shell", path: "bootstrap/apache2.sh"
+     config.vm.provision "shell", inline: "service apache2 start", run: "always"
+
+     # MySQL :
+     config.vm.provision "shell", path: "bootstrap/mysql.sh"
+
+     # Config Ram and CPU change it as you wish :
+     config.vm.provider :virtualbox do |vb|
+	   vb.customize ["modifyvm", :id, "--memory", "4086"]
+       vb.customize ["modifyvm", :id, "--cpus", "2"]
+     end
+
+     # Enable NFSd on Windows Host with vagrant-winnfsd plugin :
+	 config.vm.network "private_network", type: "dhcp"
+     config.winnfsd.uid = 1
+     config.winnfsd.gid = 1
+
+   end
