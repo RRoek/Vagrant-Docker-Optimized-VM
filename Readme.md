@@ -10,9 +10,9 @@ This Project is for you. To help you !
 
 You will be able to run Docker on every Windows from 7 to 10. Use Docker compose is easy.
 
-And... this will be faster than Docker For Windows 10 official solution ! (that is a simple VM based solution with Hyper-v...)
+And... this will be faster than Docker For Windows 10 official solution ! (that is just a simple VM based solution with Hyper-v...)
 
-This VM will run Docker and permit you to code on your Windows 7/10 host.
+This VM will run Docker and permit you to code on your Windows 7/8/8.1/10 host.
 
 ## Requirements
 
@@ -21,7 +21,7 @@ This VM will run Docker and permit you to code on your Windows 7/10 host.
 * Vagrant.
 
 ## Installation
-To install VM just cd into vagrant directory, and run : 
+To install VM just go into this project vagrant directory, and run : 
 ```bash vagrant-install.sh```
 
 Go drink a good coffee during 5-10 minutes while system install and configure your VM.
@@ -42,22 +42,24 @@ Yes VirtualBox is a bit unstable depending on version... Most of time you will h
 So don't break your mind, its not your fault, no luck that's all ! Try again with another version !
 
 ## Usages
-To run you VM, just run ```vagrant up``` in vagrant folder.
+To run your VM, just run ```vagrant up``` in vagrant folder.
 
 To connect to your VM just run ```vagrant ssh``` in vagrant folder. When connected you can do your linux jobs like use Docker :)
 
-To shutdown you VM just run ```vagrant halt``` in vagrant folder.
+To shutdown your VM just run ```vagrant halt``` in vagrant folder.
 
 Think to always shutdown your VM if you don't wanna break it !
 
 ## Explanation
-All of this is possible with VirtualBox, Vagrant, yes but but especially with [WinNFSd](https://github.com/winnfsd/winnfsd "WinNFSd") & it vagrant implementation plugin [Vagrant WinNFSd](https://github.com/winnfsd/vagrant-winnfsd "Vagrant WinNFSd") ! Special Thanks to them !
+All of this is possible with VirtualBox, Vagrant, yes, but but especially with [WinNFSd](https://github.com/winnfsd/winnfsd "WinNFSd") & it vagrant implementation plugin [Vagrant WinNFSd](https://github.com/winnfsd/vagrant-winnfsd "Vagrant WinNFSd") who speed up sharing time between Host (Windows) & guest (VM) ! Special Thanks to them !
+
+It's trully time saving with apps like Symfony2/3/4 based App.
 
 The Docker, docker-engine and docker-compose will be automatically installed on your VM.
 YourCompany Docker containers can contact the mysql on VM, so it is open to external connections (Docker and his host, the VM, don't share the same network).
 
 You can access to PhpMyAdmin of VM (wich is a LAMP stack) on _192.168.33.25_ in your Windows web browser.
-When you run a docker container, your project is accessible on _192.168.33.25:<port-configurated>_
+When you run a docker container, your project is accessible on `192.168.33.25:<port-configurated>`
 
 Simply make it accessible with your Windows host :
    ` In C:Windows\System32\drivers\etc\hosts`
@@ -83,6 +85,8 @@ and add :
             User vagrant
             IdentityFile /mnt/<your-disk-like-C-or-D>/<yourPathToThisProject>/vagrant/.vagrant/machines/default/virtualbox/private_key
     
+And use `ssh vagrant` ;)
+
 Be careful its work if the VM has already been started once !
 ## Conclusion
 It's not as good as having a true Linux Computer. But It's better and more comfortable if you can't or don't want to leave Windows !
